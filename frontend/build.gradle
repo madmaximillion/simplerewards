@@ -1,0 +1,38 @@
+plugins {
+    id 'base'
+}
+
+// ✅ Wrap platform detection inside the task itself
+tasks.register('npmInstall', Exec) {
+    group = 'frontend'
+    description = 'Install frontend dependencies using npm install'
+    workingDir = file("$projectDir")
+
+    def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+    commandLine = isWindows ? ['cmd', '/c', 'npm install'] : ['sh', '-c', 'npm install']
+}
+
+tasks.register('buildFrontend', Exec) {
+    group = 'frontend'
+    description = 'Build the frontend using Vite'
+    dependsOn 'npmInstall'
+    workingDir = file("$projectDir")
+
+    def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+    commandLine = isWindows ? ['cmd', '/c', 'npm run build'] : ['sh', '-c', 'npm run build']
+}
+
+tasks.register('devFrontend', Exec) {
+    group = 'frontend'
+    description = 'Run the frontend in dev mode (Vite)'
+    workingDir = file("$projectDir")
+
+    def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+    commandLine = isWindows ? ['cmd', '/c', 'npm run dev'] : ['sh', '-c', 'npm run dev']
+}
+
+tasks.register('frontendBuildAll') {
+    group = 'frontend'
+    description = 'Installs dependencies and builds the frontend'
+    dependsOn 'npmInstall', 'buildFrontend'
+}

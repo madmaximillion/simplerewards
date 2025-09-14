@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:./data/simplerewards.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.community.dialect.SQLiteDialect
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+server:
+  port: 8080
+
+app:
+  jwt:
+    issuer: simplerewards
+    ttlMinutes: 1440
+    secret: nq9I+nbiDC40djbSH/KAc985EHdOnfVOEAZNb3GfK5A=

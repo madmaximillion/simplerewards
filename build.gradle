@@ -1,0 +1,10 @@
+plugins { id 'base' }
+allprojects { repositories { mavenCentral() } }
+
+tasks.register('buildAll') {
+    dependsOn ':frontend:buildFrontend', ':backend:jibDockerBuild'
+}
+
+tasks.register('publishImage') {
+    dependsOn ':frontend:buildFrontend', ':backend:jib'
+}

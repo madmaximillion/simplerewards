@@ -1,9 +1,17 @@
 package com.madmaximillion.simplerewards.web.dto;
 
-import lombok.Data;
+import com.madmaximillion.simplerewards.domain.enums.RewardType;
+import com.madmaximillion.simplerewards.domain.enums.ScheduleType;
 
-@Data
-public class AssignChoreRequest {
-    private String name;
-    private int reward;
-}
+import java.time.Instant;
+
+public record AssignChoreRequest(
+        String title,
+        String description,
+        ScheduleType scheduleType,
+        boolean expiresEndOfPeriod,
+        RewardType rewardType,
+        double rewardValue,
+        boolean isAdhoc,
+        Instant dueDate
+) {}

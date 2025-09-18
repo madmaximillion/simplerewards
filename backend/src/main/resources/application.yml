@@ -1,13 +1,15 @@
 spring:
   datasource:
-    url: jdbc:sqlite:./data/simplerewards.db
-    driver-class-name: org.sqlite.JDBC
+    url: jdbc:mysql://localhost:3306/simplerewards?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: simplerewards_user
+    password: password123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
-    properties:
-      hibernate.dialect: org.hibernate.community.dialect.SQLiteDialect
-      hibernate.jdbc.time_zone: UTC
+      ddl-auto: update   # create / create-drop / update / validate / none
+    show-sql: true
   flyway:
     enabled: true
     locations: classpath:db/migration

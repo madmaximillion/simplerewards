@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ParentService {
     List<User> getChildrenForLoggedInParent();
-    List<Chore> getChoresForChild(Long childId);
     Chore assignChoreToChild(Long childId, AssignChoreRequest request);
     Chore approveChore(Long choreId);
 }

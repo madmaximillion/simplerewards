@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth-api';
-import { getUserProfile } from '../api/user-api'; // you'll create this
+import { getUserProfile } from '../api/user-api';
 
 export default function LoginForm() {
     const [username, setUsername] = useState('');
@@ -16,7 +16,7 @@ export default function LoginForm() {
             const { token } = await login(username, password);
             localStorage.setItem('token', token);
 
-            // 2. Get user profile (or decode JWT)
+            // 2. Get user profile
             const user = await getUserProfile(token);
             localStorage.setItem('role', user.role);
 
@@ -34,21 +34,85 @@ export default function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                placeholder="Username"
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Password"
-            />
-            <button type="submit">Login</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </form>
+        <div
+            style={{
+                maxWidth: '400px',
+                margin: '4rem auto',
+                padding: '2rem',
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                backgroundColor: '#fff',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            }}
+        >
+            <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+            <form onSubmit={handleSubmit}>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.25rem' }}>Username</label>
+                    <input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Enter username"
+                        style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                        }}
+                    />
+                </div>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.25rem' }}>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter password"
+                        style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                        }}
+                    />
+                </div>
+                {error && (
+                    <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <button
+                        type="submit"
+                        style={{
+                            flex: 1,
+                            marginRight: '0.5rem',
+                            padding: '0.5rem',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/register')}
+                        style={{
+                            flex: 1,
+                            marginLeft: '0.5rem',
+                            padding: '0.5rem',
+                            backgroundColor: '#2196F3',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Register
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }

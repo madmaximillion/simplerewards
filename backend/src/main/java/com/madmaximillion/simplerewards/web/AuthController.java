@@ -23,7 +23,6 @@ public class AuthController {
         u.setPasswordHash(req.password());
         u.setDisplayName(req.displayName());
         u.setRole(req.role());
-        u.setParentId(req.parentId());
         return ResponseEntity.ok(authService.register(u));
     }
 

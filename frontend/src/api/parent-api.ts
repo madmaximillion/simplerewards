@@ -10,7 +10,7 @@ export async function getChildren(token: string) {
 }
 
 export async function getChildChores(token: string, childId: number) {
-    const res = await fetch(`${API_BASE}/api/parent/children/${childId}/chores`, {
+    const res = await fetch(`${API_BASE}/api/child/${childId}/chores`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Failed to fetch child chores');
@@ -36,5 +36,20 @@ export async function approveChore(token: string, choreId: number) {
         headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Failed to approve chore');
+    return res.json();
+}
+
+export async function addChild(token: string, childData: { displayName: string }) {
+    const res = await fetch(`${API_BASE}/api/parent/children`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(childData)
+    });
+    if (!res.ok) {
+        throw new Error('Failed to add child');
+    }
     return res.json();
 }

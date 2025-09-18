@@ -1,5 +1,7 @@
 package com.madmaximillion.simplerewards.domain;
 
+import com.madmaximillion.simplerewards.domain.enums.RewardType;
+import com.madmaximillion.simplerewards.domain.enums.ScheduleType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,11 +16,11 @@ public class Chore {
 
     private String title;
     private String description;
-    private String scheduleType; // DAILY or WEEKLY
+    private ScheduleType scheduleType; // DAILY or WEEKLY
     private boolean expiresEndOfPeriod;
     private Long createdByUserId;
     private Long assignedChildId;
-    private String rewardType; // MONEY, POINTS, TREAT
+    private RewardType rewardType; // MONEY, POINTS, TREAT
     private double rewardValue;
     private String status; // TODO, AWAITING_PARENT, APPROVED, REJECTED
     private boolean isAdhoc;

@@ -18,20 +18,20 @@ public class ChoreController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<Chore> create(@RequestBody CreateChoreRequest req) {
-        Chore c = new Chore();
-        c.setTitle(req.title());
-        c.setDescription(req.description());
-        c.setScheduleType(req.scheduleType());
-        c.setExpiresEndOfPeriod(req.expiresEndOfPeriod());
-        c.setAssignedChildId(req.assignedChildId());
-        c.setRewardType(req.rewardType());
-        c.setRewardValue(req.rewardValue());
-        c.setAdhoc(req.isAdhoc());
-        c.setDueDate(req.dueDate());
-        return ResponseEntity.ok(service.save(c));
-    }
+//    @PostMapping
+//    public ResponseEntity<Chore> create(@RequestBody CreateChoreRequest req) {
+//        Chore c = new Chore();
+//        c.setTitle(req.title());
+//        c.setDescription(req.description());
+//        c.setScheduleType(req.scheduleType());
+//        c.setExpiresEndOfPeriod(req.expiresEndOfPeriod());
+//        c.setAssignedChildId(req.assignedChildId());
+//        c.setRewardType(req.rewardType());
+//        c.setRewardValue(req.rewardValue());
+//        c.setAdhoc(req.isAdhoc());
+//        c.setDueDate(req.dueDate());
+//        return ResponseEntity.ok(service.save(c));
+//    }
 
     @GetMapping("/child/{childId}")
     public List<Chore> getByChild(@PathVariable Long childId) {

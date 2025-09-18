@@ -1,5 +1,6 @@
 package com.madmaximillion.simplerewards.domain;
 
+import com.madmaximillion.simplerewards.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,12 +21,16 @@ public class User {
     private String passwordHash;
 
     @Column(nullable = false)
-    private String role; // PARENT or CHILD
+    private Role role; // PARENT or CHILD
 
     @Column(nullable = false)
     private String displayName;
 
-    private Long parentId;
+    private int points = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private User parent;
 
     private Instant createdAt = Instant.now();
 }

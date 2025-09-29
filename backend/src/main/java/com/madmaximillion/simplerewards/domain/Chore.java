@@ -1,5 +1,6 @@
 package com.madmaximillion.simplerewards.domain;
 
+import com.madmaximillion.simplerewards.domain.enums.ChoreStatus;
 import com.madmaximillion.simplerewards.domain.enums.RewardType;
 import com.madmaximillion.simplerewards.domain.enums.ScheduleType;
 import jakarta.persistence.*;
@@ -13,18 +14,25 @@ public class Chore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false)
     private String title;
     private String description;
-    private ScheduleType scheduleType; // DAILY or WEEKLY
-    private boolean expiresEndOfPeriod;
-    private Long createdByUserId;
-    private Long assignedChildId;
-    private RewardType rewardType; // MONEY, POINTS, TREAT
+    @Column(nullable = false)
+    private ScheduleType scheduleType;
+    @Column(nullable = false)
+    private boolean expiresEndOfPeriod = false;
+    @Column(nullable = false)
+    private RewardType rewardType;
+    @Column(nullable = false)
     private double rewardValue;
-    private String status; // TODO, AWAITING_PARENT, APPROVED, REJECTED
-    private boolean isAdhoc;
+    @Column(nullable = false)
+    private ChoreStatus status;
+    @Column(nullable = false)
+    private boolean isAdhoc = false;
     private Instant dueDate;
+    @Column(nullable = false)
     private Instant createdAt = Instant.now();
-    private Instant updatedAt;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_child_id")
+    private User assignedChild;
 }

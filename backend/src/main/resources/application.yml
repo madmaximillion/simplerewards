@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/simplerewards?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: simplerewards_user
-    password: password123
+    password: "Password123£"
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

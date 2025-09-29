@@ -1,5 +1,8 @@
 package com.madmaximillion.simplerewards.domain;
 
+import com.madmaximillion.simplerewards.domain.enums.RewardSource;
+import com.madmaximillion.simplerewards.domain.enums.RewardStatus;
+import com.madmaximillion.simplerewards.domain.enums.RewardType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,13 +14,21 @@ public class RewardLedger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long childId;
-    private String source; // CHORE, MANUAL, ADJUSTMENT
-    private String rewardType; // MONEY, POINTS, TREAT
-    private double amount;
-    private String status; // PENDING, GIVEN
-    private Long choreId;
+    @OneToOne
+    @JoinColumn(name = "child_id")
+    private User child;
+    @Column(nullable = false)
+    private RewardSource source;
+    @Column(nullable = false)
+    private RewardType rewardType;
+    @Column(nullable = false)
+    private double amount = 0;
+    @Column(nullable = false)
+    private RewardStatus status;
+    @OneToOne
+    @JoinColumn(name = "chore_id")
+    private Chore SourceChore;
+    @Column(nullable = false)
     private Instant createdAt = Instant.now();
-    private Instant givenAt;
+    private Instant rewardedDate;
 }

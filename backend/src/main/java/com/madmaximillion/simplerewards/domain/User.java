@@ -4,7 +4,7 @@ import com.madmaximillion.simplerewards.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -32,5 +32,6 @@ public class User {
     @JoinColumn(name = "parent_id")
     private User parent;
 
-    private Instant createdAt = Instant.now();
+    @OneToMany(mappedBy = "assignedChild")
+    private List<Chore> chores;
 }

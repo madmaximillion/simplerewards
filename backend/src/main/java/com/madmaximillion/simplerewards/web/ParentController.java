@@ -2,9 +2,10 @@ package com.madmaximillion.simplerewards.web;
 
 import com.madmaximillion.simplerewards.domain.Chore;
 import com.madmaximillion.simplerewards.domain.User;
+import com.madmaximillion.simplerewards.domain.enums.ChoreStatus;
 import com.madmaximillion.simplerewards.repo.ChoreRepository;
 import com.madmaximillion.simplerewards.repo.UserRepository;
-import com.madmaximillion.simplerewards.service.ChildService;
+import com.madmaximillion.simplerewards.service.ChildServiceImpl;
 import com.madmaximillion.simplerewards.web.dto.AssignChoreRequest;
 import com.madmaximillion.simplerewards.web.dto.ChildSummary;
 import com.madmaximillion.simplerewards.web.dto.CreateChildRequest;
@@ -30,7 +31,7 @@ public class ParentController {
 
     private final UserRepository userRepository;
     private final ChoreRepository choreRepository;
-    private final ChildService childService;
+    private final ChildServiceImpl childServiceImpl;
 
     @GetMapping("/children")
     public ResponseEntity<List<ChildSummary>> getChildren() {
@@ -45,7 +46,7 @@ public class ParentController {
     public ResponseEntity<User> createChild(@AuthenticationPrincipal UserDetails principal,
                                             @RequestBody CreateChildRequest request) {
         User parent = getLoggedInParent();
-        User createdChild = childService.addChild(parent, request);
+        User createdChild = childServiceImpl.addChild(parent, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdChild);
     }
 
@@ -67,11 +68,11 @@ public class ParentController {
         chore.setDescription(request.description());
         chore.setScheduleType(request.scheduleType());
         chore.setExpiresEndOfPeriod(request.expiresEndOfPeriod());
-        chore.setCreatedByUserId(parent.getId());
-        chore.setAssignedChildId(childId);
+//        chore.setCreatedByUserId(parent.getId());
+//        chore.setAssignedChildId(childId);
         chore.setRewardType(request.rewardType());
         chore.setRewardValue(request.rewardValue());
-        chore.setStatus("TODO");
+        chore.setStatus(ChoreStatus.TODO);
         chore.setAdhoc(request.isAdhoc());
         chore.setDueDate(request.dueDate());
         chore.setCreatedAt(Instant.now());
@@ -90,12 +91,11 @@ public class ParentController {
             return ResponseEntity.badRequest().build();
         }
 
-        chore.setStatus("APPROVED");
-        chore.setUpdatedAt(Instant.now());
+        chore.setStatus(ChoreStatus.APPROVED);
 
         // Credit points if rewardType is POINTS
         if (POINTS.equals(chore.getRewardType())) {
-            User child = userRepository.findById(chore.getAssignedChildId())
+            User child = userRepository.findById(chore.getAssignedChild().getId())
                     .orElseThrow(() -> new RuntimeException("Child not found"));
             child.setPoints(child.getPoints() + (int) chore.getRewardValue());
             userRepository.save(child);
@@ -109,14 +109,4 @@ public class ParentController {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Parent not found"));
     }
-
-//    private User validateChildOfParent(Long childId) {
-//        User parent = getLoggedInParent();
-//        User child = userRepository.findById(childId)
-//                .orElseThrow(() -> new RuntimeException("Child not found"));
-//        if (child.getParentId() == null || !child.getParentId().equals(parent.getId())) {
-//            throw new RuntimeException("Child not owned by this parent");
-//        }
-//        return child;
-//    }
 }
